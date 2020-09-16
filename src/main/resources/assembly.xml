@@ -1,0 +1,35 @@
+<assembly>
+	<id>bin</id>
+	<formats>
+		<format>dir</format>
+	</formats>
+	<dependencySets>
+		<dependencySet>
+			<useProjectArtifact>true</useProjectArtifact>
+			<outputDirectory>lib</outputDirectory>
+		</dependencySet>
+	</dependencySets>
+	<fileSets>
+		<fileSet>
+			<directory>src/main/resources</directory>
+			<outputDirectory>/config</outputDirectory>
+			<includes>
+				<include>*.yml</include>
+			</includes>
+		</fileSet>
+
+		<fileSet>
+			<directory>src/main/resources/static</directory>
+			<outputDirectory>/resources</outputDirectory>
+			<includes>
+				<include>**/*.html</include>
+			</includes>
+		</fileSet>
+
+		<fileSet>
+			<directory>runScript</directory>
+			<outputDirectory>/</outputDirectory>
+		</fileSet>
+		 
+	</fileSets>
+</assembly>
