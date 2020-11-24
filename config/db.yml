@@ -1,0 +1,25 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3309/long_sms?useUnicode=true&characterEncoding=utf8&rewriteBatchedStatements=true
+    max-active: 20
+    initial-size: 15
+    min-idle: 10
+    max-wait: 60000
+    username: root
+    password:
+  redis:
+    one:
+      redisServerIp: 127.0.0.1
+      redis-server-port: 6379
+      max-total: 10
+      max-idle: 5
+      max-wait-millis: 60000
+      test-on-borrow: true
+    two:
+      redisServerIp: 127.0.0.1
+      redis-server-port: 6379
+      maxTotal: 10
+      maxIdle: 6
+      maxWaitMillis: 60000
+      testOnBorrow: true

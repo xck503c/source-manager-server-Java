@@ -1,0 +1,14 @@
+server:
+  port: 8081
+spring:
+  mvc:
+    view:
+      prefix: /
+      suffix: .html
+
+# 配置
+# 共享目录的根路径
+source.root.path: D:/test
+
+#配置路径的根目录, 默认不配置就是项目根目录下
+config.path: D:/BaiduNetdiskDownload/source-manager-server-Java/
