@@ -1,19 +1,20 @@
 package com.xck.config;
 
 import com.alibaba.druid.pool.DruidDataSource;
-import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceBuilder;
 import com.xck.util.CompositePropertySourceFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-
-import javax.sql.DataSource;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.RedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 /**
  * @Classname DBConfig
- * @Description 数据库配置
+ * @Description 数据库和redis配置
  * @Date 2020/11/24 14:08
  * @Created by xck503c
  */
@@ -21,11 +22,14 @@ import javax.sql.DataSource;
 @PropertySource(value="file:${config.path}config/db.yml", encoding = "utf-8", factory = CompositePropertySourceFactory.class)
 public class DBConfig {
 
-    @Autowired
-    private DBSourceProperties dbSourceProperties;
+    @Bean(name="dbSourceProperties")
+    @ConfigurationProperties(prefix = "spring.datasource")
+    public DBSourceProperties dbSourceProperties(){
+        return new DBSourceProperties();
+    }
 
-    @Bean
-    public DataSource dataSource(){
+    @Bean(name = "dataSource", initMethod = "init", destroyMethod = "close")
+    public DruidDataSource dataSource(DBSourceProperties dbSourceProperties){
         DruidDataSource dataSource = new DruidDataSource();
         dataSource.setUrl(dbSourceProperties.getUrl());
         dataSource.setDriverClassName(dbSourceProperties.getDriverClassName());
@@ -47,19 +51,26 @@ public class DBConfig {
         return dataSource;
     }
 
-    @Bean(name = "oneSource")
-    @ConfigurationProperties(prefix = "spring.datasource.redis.one")
-    public RedisSourceProperties oneSource(){
-        return new RedisSourceProperties();
+    @Bean
+    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory){
+        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
+        //参照StringRedisTemplate内部实现指定序列化器
+        redisTemplate.setConnectionFactory(redisConnectionFactory);
+        redisTemplate.setKeySerializer(keySerializer());
+        redisTemplate.setHashKeySerializer(keySerializer());
+        redisTemplate.setValueSerializer(valueSerializer());
+        redisTemplate.setHashValueSerializer(valueSerializer());
+        return redisTemplate;
     }
 
-    @Bean(name = "twoSource")
-    @ConfigurationProperties(prefix = "spring.datasource.redis.two")
-    public RedisSourceProperties twoSource(){
-        return new RedisSourceProperties();
+    private RedisSerializer<String> keySerializer(){
+        return new StringRedisSerializer();
     }
 
-
+    //使用Jackson序列化器
+    private RedisSerializer<Object> valueSerializer(){
+        return new GenericJackson2JsonRedisSerializer();
+    }
 
 //    @Bean
 //    @ConfigurationProperties(prefix="spring.datasource")

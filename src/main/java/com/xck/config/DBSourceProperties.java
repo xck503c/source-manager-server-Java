@@ -1,19 +1,11 @@
 package com.xck.config;
 
-import com.xck.util.CompositePropertySourceFactory;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
-
 /**
  * @Classname DBSourceProperties
  * @Description 数据库配置
  * @Date 2020/11/24 14:34
  * @Created by xck503c
  */
-@Configuration
-@PropertySource(value = "file:${config.path}config/db.yml", encoding = "utf-8", factory = CompositePropertySourceFactory.class)
-@ConfigurationProperties(prefix = "spring.datasource")
 public class DBSourceProperties {
 
     private String url;

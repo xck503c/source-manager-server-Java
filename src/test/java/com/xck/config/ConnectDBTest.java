@@ -5,9 +5,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.annotation.Resource;
 import javax.sql.DataSource;
 
 @RunWith(SpringRunner.class)
@@ -17,11 +17,8 @@ public class ConnectDBTest {
     @Autowired
     DataSource dataSource;
 
-    @Resource
-    RedisSourceProperties oneSource;
-
-    @Resource
-    RedisSourceProperties twoSource;
+    @Autowired
+    RedisTemplate redisTemplate;
 
     @Test
     public void connectDB(){
@@ -29,12 +26,7 @@ public class ConnectDBTest {
     }
 
     @Test
-    public void connectRedisOne(){
-        System.out.println(oneSource.getRedisServerIp());
-    }
-
-    @Test
-    public void connectRedisTwo(){
-        System.out.println(twoSource.getMaxWaitMillis());
+    public void connectRedisCache(){
+        redisTemplate.opsForValue().set("a", "b");
     }
 }
