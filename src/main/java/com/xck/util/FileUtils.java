@@ -40,6 +40,7 @@ public class FileUtils {
 
     /**
      * 处理相对路径中的 ..
+     * 如果路径中包含空字符串，则过滤掉
      * @param dirPath
      * @return
      */
@@ -56,7 +57,13 @@ public class FileUtils {
         for(int i=pathPart.length-1; i>0; i--){
             if("..".equals(pathPart[i])){
                 pathPart[i] = "";
-                pathPart[i-1] = "";
+                //跳过一些为空的路径
+                for(int j=i-1; j>0; j--){
+                    if(!StringUtils.isEmpty(pathPart[j])){
+                        pathPart[j] = "";
+                        break;
+                    }
+                }
             }
         }
 

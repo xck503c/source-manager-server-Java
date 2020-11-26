@@ -4,11 +4,14 @@ spring:
   thymeleaf:
     prefix: classpath:/pages/
     suffix: .html
-
+  servlet:
+    multipart:
+      max-request-size: 10MB
+      max-file-size: 10MB
 
 # 配置
 # 共享目录的根路径
-source.root.path: D:/test/
+source.root.path: D:/test
 
 #配置路径的根目录, 默认不配置就是项目根目录下
 config.path: D:/BaiduNetdiskDownload/source-manager-server-Java/

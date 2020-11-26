@@ -2,11 +2,38 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>source browser</title>
+    <link rel="stylesheet" href="/plugin/layui/layui.css">
+    <script type="text/javascript" src="/plugin/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="/plugin/jquery/ajaxfileupload.js"></script>
+    <script type="text/javascript" src="/plugin/layui/layui.js"></script>
+    <script type="text/javascript" src="/sourceOper.js"></script>
+    <style type="text/css">
+        .layui-table { width: auto;}
+        .td { white-space: nowrap; }
+    </style>
 </head>
 <body>
-    <ul th:each="item: ${fileList}">
-        <li><a th:href="@{'/source/list?path=' + ${item.absolutePath}}" th:text="${item.fileName}"></a></li>
-    </ul>
+<div style="width: 100%">
+    <table class="layui-table" style="text-align:left">
+        <thead>
+            <tr>
+                <th class="layui-col-sm3">文件名</th>
+                <!--<th>修改时间</th>-->
+                <th colspan="1">操作</th>
+            </tr>
+        </thead>
+        <tr th:each="item: ${fileList}">
+            <td><a th:href="@{'/source/list?path=' + ${item.absolutePath}}" th:text="${item.fileName}"></a></td>
+            <td><a>删除</a></td>
+        </tr>
+    </table>
+</div>
+    <!--<ul th:each="item: ${fileList}">-->
+        <!--<li><a th:href="@{'/source/list?path=' + ${item.absolutePath}}" th:text="${item.fileName}"></a></li>-->
+    <!--</ul>-->
+    <input type="button" th:onclick="'javascript:inputUploadClick();'" value = "资源上传" />
+    <input type="file" name="file" style="display:none" id="inputUpload" onchange="uploadFile()"/>
+    <input type="button" th:onclick="'javascript:newFload(\''+1+'\');'" value = "新建文件夹" />
 </body>
 </html>
