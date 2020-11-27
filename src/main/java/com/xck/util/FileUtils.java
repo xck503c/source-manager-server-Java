@@ -73,7 +73,9 @@ public class FileUtils {
                 path.append(pathPart[i]).append("/");
             }
         }
-        path.delete(path.length()-1, path.length());
+        if (path.length() > 0) {
+            path.delete(path.length()-1, path.length());
+        }
 
         return path.toString();
     }

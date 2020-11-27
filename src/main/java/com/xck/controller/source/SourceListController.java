@@ -1,15 +1,13 @@
 package com.xck.controller.source;
 
 import com.xck.model.FileListItem;
+import com.xck.model.ReqResponse;
 import com.xck.util.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.support.StandardMultipartHttpServletRequest;
 
@@ -67,7 +65,8 @@ public class SourceListController {
             item.setAbsolutePath(absolute.substring(sourceRootDir.length()));
         }
 
-        modelMap.addAttribute("fileList", fileList);
+        modelMap.addAttribute("fileList", fileList)
+                .addAttribute("curPath", path);
         return "sourceList";
     }
 
@@ -137,22 +136,54 @@ public class SourceListController {
     }
 
     /**
-     * 资源上传，将资源上传到基础路径/download/，的目录下面
+     * 资源上传，将资源上传到指定的目录下面
      * @param request
      * @return
      * @throws Exception
      */
     @PostMapping("/upload")
-    public String upload(HttpServletRequest request) throws Exception{
+    @ResponseBody
+    public ReqResponse upload(String path, HttpServletRequest request) throws Exception{
+        String dirPath = FileUtils.dealRelative(path);
+        if(StringUtils.isEmpty(dirPath)){
+            dirPath = sourceRootDir;
+        }else{
+            dirPath = sourceRootDir + "/" + dirPath;
+        }
+
         StandardMultipartHttpServletRequest multipartHttpServletRequest = (StandardMultipartHttpServletRequest)request;
         MultipartFile multipartFile = multipartHttpServletRequest.getFile("file");
-        File file = new File(sourceRootDir + "/download/" + multipartFile.getOriginalFilename());
+        File file = new File(dirPath + "/" + multipartFile.getOriginalFilename());
+        if (file.exists()){
+            return new ReqResponse("上传失败，存在同名文件", 0);
+        }
+
         if(!file.getParentFile().exists()){
             file.getParentFile().mkdir();
         }
 
         multipartFile.transferTo(file);
 
-        return "redirect:/main/index";
+        return new ReqResponse("上传成功", 0);
+    }
+
+    @GetMapping("/newFolder")
+    @ResponseBody
+    public ReqResponse newFolder(String path, String folderName){
+        String dirPath = FileUtils.dealRelative(path);
+        if(StringUtils.isEmpty(dirPath)){
+            dirPath = sourceRootDir;
+        }else{
+            dirPath = sourceRootDir + "/" + dirPath;
+        }
+
+        File file = new File(dirPath + "/" + folderName);
+        if(file.exists()){
+            return new ReqResponse("已存在同名文件夹", 1);
+        }
+
+        file.mkdir();
+
+        return new ReqResponse("创建成功", 0);
     }
 }
