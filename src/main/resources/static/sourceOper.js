@@ -47,7 +47,7 @@ function uploadFile(path){
     // });
 }
 
-function newFolder(path){
+function newFolder(){
     layui.use('layer', function(){
         var layer = layui.layer;
         layer.open({
@@ -62,7 +62,7 @@ function newFolder(path){
             anim: 1, //弹出动画：从上掉落
             yes: function (index, layero) {
                 $.getJSON('/source/newFolder', { //传递json请求
-                    path: path,
+                    path: $('#curPath').val(),
                     folderName: $('#folderName').val()
                 },
                 function(data) {
@@ -74,6 +74,38 @@ function newFolder(path){
                         layer.close(index); //关闭弹出层
                     });
                 });
+            }
+        });
+    });
+}
+
+function delFolder(item) {
+    //获取父元素中的id
+    var order = $(item).parent().parents("tr").attr('id');
+    layui.use('layer', function () {
+        var layer = layui.layer;
+        layer.open({
+            type: 0, //信息框
+            content: '是否确认删除?',
+            shadeClose: true, //通过点击弹窗外部区域来关闭弹窗
+            scrollbar: false, //不允许出现滚动条
+            title: ['删除文件'],
+            area: ['320px'],
+            btn: ['确定', '取消'],
+            btnAlign: 'c', //居中对其
+            anim: 1, //弹出动画：从上掉落
+            yes: function (index, layero) {
+                $.getJSON('/source/delFolder', { //传递json请求
+                        path: $('#absolutePath'+order).val(), //拼接拿到指定id
+                    },
+                    function (data) {
+                        layer.alert(data.desc, function (alertIndex) {
+                            var index = parent.layer.getFrameIndex(window.name);
+                            parent.location.reload(); //刷新父页面
+                            layer.close(alertIndex); //关闭alert窗口
+                            layer.close(index); //关闭弹出层
+                        });
+                    });
             }
         });
     });

@@ -24,9 +24,13 @@
         /* 让表格覆盖layui里面的width: 100% 指定固定的大小*/
         .layui-table {
             position:relative;
-            width: 600px;
+            width: 820px;
             heigh: 200px;
             margin:0 auto;
+        }
+        .delFileButtonClass{
+            height: 25px;
+            line-height: 15px;
         }
     </style>
 </head>
@@ -47,13 +51,16 @@
             <thead>
             <tr>
                 <th>文件名</th>
-                <!--<th>修改时间</th>-->
+                <th>修改时间</th>
                 <th>操作</th>
             </tr>
             </thead>
-            <tr th:each="item: ${fileList}">
+            <tr th:each="item: ${fileList}" th:id="${itemStat.index+1}">
                 <td><a th:href="@{'/source/list?path=' + ${item.absolutePath}}" th:text="${item.fileName}"></a></td>
-                <td><a>删除</a></td>
+                <td th:text="${item.modifyTime}"></td>
+                <td><button class="delFileButtonClass layui-btn layui-btn-danger layui-btn-sm"
+                            th:onclick="'javascript:delFolder(this);'">删除</button></td>
+                <input th:id="@{'absolutePath'+${itemStat.index+1}}" type="hidden" th:value="${item.absolutePath}"/>
             </tr>
         </table>
         <!-- 按钮利用文字居中，通过margin调整两个div之间的间距 -->
@@ -64,7 +71,7 @@
             <!--<input type="button" class="layui-btn layui-btn-normal layui-btn-sm" th:onclick="'javascript:inputUploadClick();'" value = "资源上传" />-->
             <!--<input type="file" name="file" style="display:none" id="inputUpload" th:onchange="@{'javascript:uploadFile(\''+${curPath}+'\');'}"/>-->
             <button data-method="offset" data-type="auto" class="layui-btn layui-btn-normal layui-btn-sm"
-                    th:onclick="@{'javascript:newFolder(\''+${curPath}+'\');'}">新建文件夹</button>
+                    th:onclick="'javascript:newFolder();'">新建文件夹</button>
         </div>
     </div>
 </body>

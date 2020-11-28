@@ -23,13 +23,15 @@ public class FileUtils {
     public static List<FileListItem> getFileList(String dirPath){
         File dir = new File(dirPath);
 
+        System.out.println(dirPath + " " + dir.isDirectory());
         if(dir.isDirectory()){
             List<FileListItem> fileNames = new ArrayList<>();
-            fileNames.add(new FileListItem(dirPath+"/../", "../"));
+            fileNames.add(new FileListItem(dirPath+"/../", "../", DateUtil.yyyyMMddhhmmssSSSFormat(dir.lastModified())));
             File[] fileArr = dir.listFiles();
+
             if(fileArr!=null && fileArr.length>0){
                 for(File file : fileArr){
-                    fileNames.add(new FileListItem(file.getAbsolutePath(), file.getName()));
+                    fileNames.add(new FileListItem(file.getAbsolutePath(), file.getName(), DateUtil.yyyyMMddhhmmssSSSFormat(file.lastModified())));
                 }
             }
 
@@ -67,7 +69,7 @@ public class FileUtils {
             }
         }
 
-        StringBuilder path = new StringBuilder();
+        StringBuilder path = new StringBuilder("/");
         for(int i=0; i<pathPart.length; i++){
             if(!StringUtils.isEmpty(pathPart[i])){
                 path.append(pathPart[i]).append("/");

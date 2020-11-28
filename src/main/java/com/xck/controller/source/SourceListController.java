@@ -123,7 +123,8 @@ public class SourceListController {
             input.read(data);
             response.getOutputStream().write(data);
         } catch (IOException e) {
-            e.printStackTrace();
+            //忽略，因为视频播放中途关闭这里会报错
+//            e.printStackTrace();
         } finally {
             try {
                 if(input!=null){
@@ -185,5 +186,28 @@ public class SourceListController {
         file.mkdir();
 
         return new ReqResponse("创建成功", 0);
+    }
+
+    @GetMapping("/delFolder")
+    @ResponseBody
+    public ReqResponse delFolder(String path){
+        String filePath = FileUtils.dealRelative(path);
+        if(StringUtils.isEmpty(filePath)){
+            return new ReqResponse("无需要删除的文件", 2);
+        }else{
+            filePath = sourceRootDir + "/" + filePath;
+        }
+
+        File file = new File(filePath);
+        if(file.exists()){
+            boolean delResult = file.delete();
+            if (delResult) {
+                return new ReqResponse("删除成功", 0);
+            }else {
+                return new ReqResponse("删除失败", 1);
+            }
+        }
+
+        return new ReqResponse("无需要删除的文件", 2);
     }
 }

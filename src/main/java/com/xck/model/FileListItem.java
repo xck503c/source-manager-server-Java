@@ -8,12 +8,14 @@ package com.xck.model;
  */
 public class FileListItem {
 
-    private String absolutePath;
+    private String absolutePath; //文件的绝对路径(显示在页面上需要去除基础路径)
     private String fileName;
+    private String modifyTime; //修改时间
 
-    public FileListItem(String absolutePath, String fileName) {
+    public FileListItem(String absolutePath, String fileName, String modifyTime) {
         this.absolutePath = absolutePath;
         this.fileName = fileName;
+        this.modifyTime = modifyTime;
     }
 
     public String getAbsolutePath() {
@@ -30,5 +32,13 @@ public class FileListItem {
 
     public void setFileName(String fileName) {
         this.fileName = fileName;
+    }
+
+    public String getModifyTime() {
+        return modifyTime;
+    }
+
+    public void setModifyTime(String modifyTime) {
+        this.modifyTime = modifyTime;
     }
 }

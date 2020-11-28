@@ -28,49 +28,49 @@ public class DBConfig {
         return new DBSourceProperties();
     }
 
-    @Bean(name = "dataSource", initMethod = "init", destroyMethod = "close")
-    public DruidDataSource dataSource(DBSourceProperties dbSourceProperties){
-        DruidDataSource dataSource = new DruidDataSource();
-        dataSource.setUrl(dbSourceProperties.getUrl());
-        dataSource.setDriverClassName(dbSourceProperties.getDriverClassName());
-        dataSource.setMaxActive(dbSourceProperties.getMaxActive());
-        dataSource.setInitialSize(dbSourceProperties.getInitialSize());
-        dataSource.setMinIdle(dbSourceProperties.getMinIdle());
-        dataSource.setMaxWait(dbSourceProperties.getMaxWait());
-        dataSource.setUsername(dbSourceProperties.getUsername());
-        dataSource.setPassword(dbSourceProperties.getPassword());
-
-        dataSource.setTimeBetweenEvictionRunsMillis(60000);
-        dataSource.setValidationQuery("SELECT 'x'");
-        dataSource.setTestWhileIdle(true);
-        dataSource.setTestOnBorrow(false);
-        dataSource.setTestOnReturn(false);
-        dataSource.setRemoveAbandoned(true);
-        dataSource.setRemoveAbandonedTimeout(180);
-        dataSource.setLogAbandoned(true);
-        return dataSource;
-    }
-
-    @Bean
-    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory){
-        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
-        //参照StringRedisTemplate内部实现指定序列化器
-        redisTemplate.setConnectionFactory(redisConnectionFactory);
-        redisTemplate.setKeySerializer(keySerializer());
-        redisTemplate.setHashKeySerializer(keySerializer());
-        redisTemplate.setValueSerializer(valueSerializer());
-        redisTemplate.setHashValueSerializer(valueSerializer());
-        return redisTemplate;
-    }
-
-    private RedisSerializer<String> keySerializer(){
-        return new StringRedisSerializer();
-    }
-
-    //使用Jackson序列化器
-    private RedisSerializer<Object> valueSerializer(){
-        return new GenericJackson2JsonRedisSerializer();
-    }
+//    @Bean(name = "dataSource", initMethod = "init", destroyMethod = "close")
+//    public DruidDataSource dataSource(DBSourceProperties dbSourceProperties){
+//        DruidDataSource dataSource = new DruidDataSource();
+//        dataSource.setUrl(dbSourceProperties.getUrl());
+//        dataSource.setDriverClassName(dbSourceProperties.getDriverClassName());
+//        dataSource.setMaxActive(dbSourceProperties.getMaxActive());
+//        dataSource.setInitialSize(dbSourceProperties.getInitialSize());
+//        dataSource.setMinIdle(dbSourceProperties.getMinIdle());
+//        dataSource.setMaxWait(dbSourceProperties.getMaxWait());
+//        dataSource.setUsername(dbSourceProperties.getUsername());
+//        dataSource.setPassword(dbSourceProperties.getPassword());
+//
+//        dataSource.setTimeBetweenEvictionRunsMillis(60000);
+//        dataSource.setValidationQuery("SELECT 'x'");
+//        dataSource.setTestWhileIdle(true);
+//        dataSource.setTestOnBorrow(false);
+//        dataSource.setTestOnReturn(false);
+//        dataSource.setRemoveAbandoned(true);
+//        dataSource.setRemoveAbandonedTimeout(180);
+//        dataSource.setLogAbandoned(true);
+//        return dataSource;
+//    }
+//
+//    @Bean
+//    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory){
+//        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
+//        //参照StringRedisTemplate内部实现指定序列化器
+//        redisTemplate.setConnectionFactory(redisConnectionFactory);
+//        redisTemplate.setKeySerializer(keySerializer());
+//        redisTemplate.setHashKeySerializer(keySerializer());
+//        redisTemplate.setValueSerializer(valueSerializer());
+//        redisTemplate.setHashValueSerializer(valueSerializer());
+//        return redisTemplate;
+//    }
+//
+//    private RedisSerializer<String> keySerializer(){
+//        return new StringRedisSerializer();
+//    }
+//
+//    //使用Jackson序列化器
+//    private RedisSerializer<Object> valueSerializer(){
+//        return new GenericJackson2JsonRedisSerializer();
+//    }
 
 //    @Bean
 //    @ConfigurationProperties(prefix="spring.datasource")
