@@ -1,13 +1,18 @@
 spring:
   datasource:
-    driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3309/long_sms?useUnicode=true&characterEncoding=utf8&rewriteBatchedStatements=true
-    max-active: 20
-    initial-size: 15
-    min-idle: 10
-    max-wait: 60000
+    driver-class-name: org.sqlite.JDBC
+    url: jdbc:sqlite:config/source_manager.db
     username: root
-    password:
+    password: root
+#  datasource:
+#    driver-class-name: com.mysql.jdbc.Driver
+#    url: jdbc:mysql://127.0.0.1:3309/long_sms?useUnicode=true&characterEncoding=utf8&rewriteBatchedStatements=true
+#    max-active: 20
+#    initial-size: 15
+#    min-idle: 10
+#    max-wait: 60000
+#    username: root
+#    password:
   redis:
     cache:
       host: 127.0.0.1

@@ -60,6 +60,7 @@ public class SourceListController {
         for(int i=0; i<fileList.size(); i++){
             FileListItem item = fileList.get(i);
             String absolute = item.getAbsolutePath();
+            //路径统一正斜杠
             absolute = absolute.replaceAll("\\\\", "/");
             //最后在页面上的路径签名需要带上斜杠，而sourceRootDir后面是不带斜杠，所以这里会保留
             item.setAbsolutePath(absolute.substring(sourceRootDir.length()));

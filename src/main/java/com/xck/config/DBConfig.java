@@ -11,6 +11,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+import org.sqlite.SQLiteDataSource;
 
 /**
  * @Classname DBConfig
@@ -26,6 +27,13 @@ public class DBConfig {
     @ConfigurationProperties(prefix = "spring.datasource")
     public DBSourceProperties dbSourceProperties(){
         return new DBSourceProperties();
+    }
+
+    @Bean(name = "dataSource")
+    public SQLiteDataSource dataSource(DBSourceProperties dbSourceProperties){
+        SQLiteDataSource dataSource = new SQLiteDataSource();
+        dataSource.setUrl(dbSourceProperties.getUrl());
+        return dataSource;
     }
 
 //    @Bean(name = "dataSource", initMethod = "init", destroyMethod = "close")
