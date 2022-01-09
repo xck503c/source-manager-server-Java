@@ -15,25 +15,26 @@
 			<outputDirectory>/config</outputDirectory>
 			<includes>
 				<include>*.yml</include>
+				<include>*.db</include>
 			</includes>
 		</fileSet>
 
-		<fileSet>
-			<directory>src/main/resources/pages</directory>
-			<outputDirectory>/resources/pages</outputDirectory>
-			<includes>
-				<include>**/*.html</include>
-			</includes>
-		</fileSet>
+		<!--<fileSet>-->
+			<!--<directory>src/main/resources/pages</directory>-->
+			<!--<outputDirectory>/resources/pages</outputDirectory>-->
+			<!--<includes>-->
+				<!--<include>**/*.html</include>-->
+			<!--</includes>-->
+		<!--</fileSet>-->
 
-		<fileSet>
-			<directory>src/main/resources/static</directory>
-			<outputDirectory>/resources/static</outputDirectory>
-			<includes>
-				<include>**/*.js</include>
-				<include>**/*.css</include>
-			</includes>
-		</fileSet>
+		<!--<fileSet>-->
+			<!--<directory>src/main/resources/static</directory>-->
+			<!--<outputDirectory>/resources/static</outputDirectory>-->
+			<!--<includes>-->
+				<!--<include>**/*.js</include>-->
+				<!--<include>**/*.css</include>-->
+			<!--</includes>-->
+		<!--</fileSet>-->
 
 		<fileSet>
 			<directory>runScript</directory>

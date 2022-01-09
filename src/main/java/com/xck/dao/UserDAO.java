@@ -6,37 +6,61 @@ import org.springframework.stereotype.Repository;
 import org.sqlite.SQLiteDataSource;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 @Repository
 public class UserDAO {
 
     @Autowired
-    DataSource dataSource;
+    SQLiteDataSource dataSource;
 
+    /**
+     * 根据userId获得账户信息
+     * @param userId
+     * @return
+     */
     public User findUser(String userId){
-        String sql = "select user_id, user_name, user_pwd from user_info where user_id='" + userId + "'";
+        String sql = "select user_id, user_name, user_pwd, white_ips from user_info where user_id=?";
 
-        SQLiteDataSource ds = (SQLiteDataSource) dataSource;
         Connection connection = null;
-        Statement statement = null;
+        PreparedStatement ps = null;
         ResultSet rs = null;
         try{
-            ds.getConnection("root", "root");
-            statement = connection.createStatement();
-            rs = statement.executeQuery(sql);
+            connection = dataSource.getConnection("root", "root");
+            ps = connection.prepareStatement(sql);
+            ps.setString(1, userId);
+            rs = ps.executeQuery();
             while (rs.next()){
                 User user = new User();
                 user.setUserId(rs.getString("user_id"));
                 user.setUserPwd(rs.getString("user_pwd"));
                 user.setUesrName(rs.getString("user_name"));
+                user.setWhiteIps(rs.getString("white_ips"));
                 return user;
             }
         }catch (SQLException e){
             e.printStackTrace();
+        }finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                }
+            }
+
+            if (ps != null) {
+                try {
+                    ps.close();
+                } catch (SQLException e) {
+                }
+            }
+
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                }
+            }
         }
 
         return null;
